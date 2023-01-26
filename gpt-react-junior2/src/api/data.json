@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "title": "Cat 1",
+      "description": "This is the description for cat 1",
+      "image": "https://images.wallpaperscraft.com/image/single/cat_cute_ball_127642_1920x1080.jpg"
+    },
+    {
+      "title": "Cat 2",
+      "description": "This is the description for cat 2",
+      "image": "https://images.wallpaperscraft.com/image/single/cat_eyes_black_124134_1920x1080.jpg"
+    },
+    {
+      "title": "Cat 3",
+      "description": "This is the description for cat 3",
+      "image": "https://images.wallpaperscraft.com/image/single/cat_snow_eyes_fluffy_95615_1920x1080.jpg"
+    }
+  ]
+}
