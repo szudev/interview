@@ -1,6 +1,6 @@
 function MoviesResult({ movies }) {
   return (
-    <ul className="flex flex-wrap gap-6 justify-center items-center">
+    <ul className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] w-full gap-6 justify-center items-center">
       {movies.map((movie) => (
         <li
           key={movie.id}
@@ -8,7 +8,7 @@ function MoviesResult({ movies }) {
         >
           <h3>{movie.title}</h3>
           <p>{movie.year}</p>
-          <img src={movie.poster} alt={movie.title} className="" />
+          <img src={movie.poster} alt={movie.title} className="rounded" />
         </li>
       ))}
     </ul>
@@ -23,8 +23,8 @@ function NoMoviesResult() {
   );
 }
 
-export default function Movies({ hasMovies, movies }) {
-  return hasMovies === "True" ? (
+export default function Movies({ movies }) {
+  return movies !== undefined ? (
     <MoviesResult movies={movies} />
   ) : (
     <NoMoviesResult />

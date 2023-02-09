@@ -1,16 +1,27 @@
-import WithResults from "./api/search.response.json";
-import WithoutResults from "./api/no-result.response.json";
+import { useState } from "react";
 import Movies from "./components/Movies";
-import { useMovies } from "./hooks/useMovies";
+import useMovies from "./hooks/useMovies";
+import useSearch from "./hooks/useSearch";
 
 function App() {
-  const { movies, hasMovies } = useMovies();
+  const [sort, setSort] = useState(false);
+  const { search, updateSearch, error } = useSearch();
+  const { movies, getMovies, loading, errorMessage } = useMovies({
+    search,
+    sort,
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const fields = new window.FormData(event.target);
-    const inputData = fields.get("searchedMovie");
-    console.log(inputData);
+    getMovies();
+  };
+
+  const handleSort = () => {
+    setSort(!sort);
+  };
+
+  const handleChange = (event) => {
+    updateSearch(event.target.value);
   };
 
   return (
@@ -19,17 +30,21 @@ function App() {
         <p className="text-white text-4xl">Movie Searcher</p>
         <form className="flex gap-4" onSubmit={handleSubmit}>
           <input
-            name="searchedMovie"
+            name="search"
             placeholder="Movie name..."
             className="p-2"
+            onChange={handleChange}
+            value={search}
           />
+          <input type="checkbox" onChange={handleSort} checked={sort} />
           <button type="submit" className="bg-white text-black p-2 rounded">
             Search
           </button>
         </form>
+        {error && <p className="text-red-500 text-center text-lg">{error}</p>}
       </header>
-      <main className="flex justify-center items-center p-4 text-white">
-        <Movies hasMovies={hasMovies} movies={movies} />
+      <main className="flex w-full justify-center items-center p-4 text-white">
+        {loading ? <p>Loading...</p> : <Movies movies={movies} />}
       </main>
     </div>
   );
