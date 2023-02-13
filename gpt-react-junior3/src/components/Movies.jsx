@@ -24,9 +24,6 @@ function NoMoviesResult() {
 }
 
 export default function Movies({ movies }) {
-  return movies !== undefined ? (
-    <MoviesResult movies={movies} />
-  ) : (
-    <NoMoviesResult />
-  );
+  const hasMovies = movies?.length > 0;
+  return hasMovies ? <MoviesResult movies={movies} /> : <NoMoviesResult />;
 }
