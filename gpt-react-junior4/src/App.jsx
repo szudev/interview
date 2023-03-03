@@ -1,15 +1,17 @@
 import Products from "./components/Products";
 import Header from "./components/Header";
-import useFilter from "./hooks/useFilter";
+import Cart from "./components/Cart";
+import CartProvider from "./context/cart";
 
 function App() {
-  const { filteredProducts, setFilters } = useFilter();
-
   return (
-    <div className="bg-black min-h-screen flex flex-col">
-      <Header setFilters={setFilters} />
-      <Products products={filteredProducts} />
-    </div>
+    <CartProvider>
+      <div className="bg-black min-h-screen flex flex-col">
+        <Header />
+        <Cart />
+        <Products />
+      </div>
+    </CartProvider>
   );
 }
 

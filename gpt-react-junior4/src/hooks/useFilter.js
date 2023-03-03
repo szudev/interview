@@ -16,5 +16,5 @@ export default function useFilter() {
 
   const filteredProducts = filterProducts(products);
 
-  return { filteredProducts, setFilters };
+  return { filteredProducts, filters, setFilters };
 }
