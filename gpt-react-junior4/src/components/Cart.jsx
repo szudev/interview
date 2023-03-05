@@ -1,35 +1,7 @@
 import { useId } from "react";
 import useCart from "../hooks/useCart";
 import { CartIcon, ClearCartIcon } from "./Icons";
-
-function CartItem({
-  id,
-  thumbnail,
-  price,
-  description,
-  title,
-  quantity,
-  addToCart,
-}) {
-  return (
-    <li className="border-b-[1px] pb-4" key={id}>
-      <img src={thumbnail} alt={description} className="aspect-video w-full" />
-      <div className="text-white flex flex-col items-center justify-center">
-        <strong>{title}</strong>
-        <p>${price}</p>
-      </div>
-      <footer className="text-white flex gap-2 justify-center items-center">
-        <small>Quantity: {quantity}</small>
-        <button
-          className="rounded-sm px-2 text-lg hover:scale-[1.1] bg-black"
-          onClick={addToCart}
-        >
-          +
-        </button>
-      </footer>
-    </li>
-  );
-}
+import CartItem from "./CartItem";
 
 export default function Cart() {
   const CartCheckBoxId = useId();
@@ -47,7 +19,7 @@ export default function Cart() {
         <ul className="flex flex-col">
           {cart.map((product) => (
             <CartItem
-              id={product.id}
+              key={product.id}
               title={product.title}
               price={product.price}
               thumbnail={product.thumbnail}
