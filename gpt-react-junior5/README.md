@@ -1,7 +1,6 @@
-min: 1:19:00
 Prueba técnica con TypeScript y React
 
-El objetivo de esta prueba técnica es crear una aplicación similar a la que se proporciona en este enlace: https://midu-react-11.surge.sh/. Para lograr esto, debe usar la API proporcionada por https://randomuser.me/.
+Se debe usar la API proporcionada por https://randomuser.me/.
 
 Los pasos a seguir:
 
