@@ -43,7 +43,7 @@ export default function UsersList({
         {users.map((user) => {
           return (
             <tr
-              key={user.login.uuid}
+              key={user.email}
               className={
                 showColors ? "even:bg-[#333] odd:bg-[#555]" : "bg-transparent"
               }

@@ -1,25 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { type User, SortBy } from "./types.d";
 import UsersList from "./components/UsersList";
+import useUsers from "./hooks/useUsers";
+import Results from "./components/Results";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const {
+    isLoading: loading,
+    users,
+    isError: error,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+  } = useUsers();
+
   const [displayRowsColors, setDisplayRowsColors] = useState(false);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
   const [filterCountry, setFilterCountry] = useState<string | null>(null);
-  const originalUsers = useRef<User[]>([]);
-
-  useEffect(() => {
-    fetch("https://randomuser.me/api/?results=100")
-      .then(async (res) => await res.json())
-      .then((data) => {
-        setUsers(data.results);
-        originalUsers.current = data.results;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   const toggleColors = () => {
     setDisplayRowsColors((prevState) => !prevState);
@@ -32,12 +29,12 @@ function App() {
   };
 
   const handleDelete = (userUUid: string) => {
-    const filteredUsers = users.filter((user) => user.login.uuid !== userUUid);
-    setUsers(filteredUsers);
+    // const filteredUsers = users.filter((user) => user.login.uuid !== userUUid);
+    // setUsers(filteredUsers);
   };
 
   const handleResetUserState = () => {
-    setUsers(originalUsers.current);
+    void refetch();
   };
 
   const handleChangeSort = (sort: SortBy) => {
@@ -56,7 +53,6 @@ function App() {
   }, [users, filterCountry]);
 
   const sortedUsers = useMemo(() => {
-    console.log("calculate sortedusers");
     if (sorting === SortBy.NONE) return filteredUsers;
 
     const compareProperty: Record<string, (user: User) => string> = {
@@ -72,9 +68,10 @@ function App() {
   }, [filteredUsers, sorting]);
 
   return (
-    <main className="bg-black min-h-screen text-white text-center gap-8 p-4 items-center flex flex-col">
+    <div className="bg-black min-h-screen text-white text-center gap-8 p-4 items-center flex flex-col">
       <header className="flex flex-col gap-4">
         <h1 className="text-4xl">Ejercicio Técnico</h1>
+        <Results />
         <div className="flex gap-2">
           <button className="rounded bg-slate-600 p-2" onClick={toggleColors}>
             Colorear Filas
@@ -102,13 +99,35 @@ function App() {
           />
         </div>
       </header>
-      <UsersList
-        users={sortedUsers}
-        showColors={displayRowsColors}
-        deleteUser={handleDelete}
-        changeSorting={handleChangeSort}
-      />
-    </main>
+      <main className="w-full">
+        {users.length > 0 && (
+          <UsersList
+            users={sortedUsers}
+            showColors={displayRowsColors}
+            deleteUser={handleDelete}
+            changeSorting={handleChangeSort}
+          />
+        )}
+        {loading && <p className="text-white">Loading...</p>}
+        {error && <p className="text-white">Ha ocurrido un error.</p>}
+        {!loading && !error && users.length === 0 && (
+          <p className="text-white">No hay usuarios</p>
+        )}
+        {!loading && !error && hasNextPage === true && (
+          <button
+            className="rounded bg-slate-800 p-2"
+            onClick={() => {
+              void fetchNextPage();
+            }}
+          >
+            Cargar mas resultados
+          </button>
+        )}
+        {!loading && !error && hasNextPage === false && (
+          <p className="text-white">No hay mas resultados.</p>
+        )}
+      </main>
+    </div>
   );
 }
 
